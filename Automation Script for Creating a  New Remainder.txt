@@ -1,0 +1,124 @@
+
+/* 
+
+To perform the automation using appium for the native android app just .apk file is enough. No need of developers code at all.
+When we write the appium script for automation we need to specify the package name and activity name. 
+We can get package and all activity names from the .apk file itself. For this we need to convert .apk file to java class files.
+
+I used following environments to accomplish this program,
+
+Android Mobile device
+Android SDK
+JDK
+Eclipse
+TestNG
+Appium 
+
+To run the script following things required:
+
+Andorid device along with cable should be avaialable.
+Application file (apk file).
+After connecting the mobile to machine ,we need to make sure it is connected properly by running adb command from command prompt
+Appium server should have to start before running the scripst from Eclipse IDE.
+
+*/
+This program is for creating the  new remainders from Improve my expereince feature
+*/
+Package basepage;
+import io.appium.java_client.AppiumDriver;
+import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.remote.MobileCapabilityType;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
+
+public class QAassignment
+ {
+ protected static WebDriver driver;
+
+ //Create object for DesiredCapabilities class
+ DesiredCapabilities cap  = new DesiredCapabilities();
+
+  @Test
+ public void createRemainder() throws MalformedURLException, InterruptedException {
+ // Set the Platforrm name -we can change based on your requirement     
+cap.setCapability("platformName", "Android");
+
+ // Set the device name- we can change based on your requirement  
+     cap.setCapability("deviceName", "my phone");
+
+ // Set the platform version - we can change based on your requirement
+  cap.setCapability("platformVersion", "6.0");
+
+// path of the APK file
+  File file = new File("E:\\Appium\\SocialNetWorkMobile\\src\\main\\resources\\apk\\com.techbins.niki_2017-05-30.apk");
+  cap.setCapability("app",file.getAbsolutePath());
+
+//It will launch the app in Android device using the configurations declared in desired capabilities
+  driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), cap);
+
+  driver.manage().timeouts().implicitlyWait(10,TimeUnit.SECONDS);
+
+  //To enter the registered mobile number  
+  driver.findElement(By.id("com.techbins.niki:id/edtTxtPhone")).sendKeys("9700017049");
+
+ //To Perform submit operation 
+  driver.findElement(By.id("com.techbins.niki:id/btnSubmit")).click();
+  Thread.sleep(5000);
+
+ //To Enter received OTP 
+  driver.findElement(By.id("com.techbins.niki:id/editTxtCode")).sendKeys("0578");
+
+ //To perform Skip Operation 
+  driver.findElement(By.id("com.techbins.niki:id/btn_skip")).click();
+
+  //To allow device -media access permissions for the app 
+  driver.findElement(By.id("com.android.packageinstaller:id/permission_allow_button")).click();
+  driver.findElement(By.id("com.android.packageinstaller:id/permission_allow_button")).click();
+
+//To deny the GPRS options
+  driver.findElement(By.id("android:id/button2")).click();
+
+//To view the menu options  
+  driver.findElement(By.className("android.widget.ImageButton")).click();
+
+//To Select Improve my experience option from the menu  
+driver.findElement(By.name("Improve My Experience")).click();
+  Thread.sleep(2000);
+
+//For creating new remainder
+  driver.findElement(By.name("+ CREATE A NEW REMINDER")).click();
+
+// To enter remainder name 
+ driver.findElement(By.id("com.techbins.niki:id/reminderTitle")).sendKeys("Remind new on");
+  ((AppiumDriver) driver).hideKeyboard();
+
+//To select remainder days
+  driver.findElement(By.id("com.techbins.niki:id/wednesday")).click();
+  Thread.sleep(2000);
+
+//To save the remainder 
+  driver.findElement(By.id("com.techbins.niki:id/saveReminderButton")).click();
+ }
+
+ @Aftermethod
+ public void aftermethod() {
+  //Close application after tests completes
+  driver.quit();
+ }
+
+}
